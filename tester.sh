@@ -95,7 +95,7 @@ mandatory() {
 	fi
 	#test 4
 
-	< in/in_1.txt grep "nulla" | wc -l > out/outfileshell.txt > /dev/null 2>&1
+	< in/in_1.txt grep "nulla" | wc -l > out/outfile_shell.txt > /dev/null 2>&1
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --log-file=errors/valgrind_log.txt ../$PIPEX in/in_1.txt "grep nulla" "wc -l" out/outfile_user.txt > /dev/null 2>&1
 	check_valgrind
 	VALGRIND_CODE=$?
@@ -133,7 +133,7 @@ mandatory() {
 	fi
 	#test 6
 
-	< in/in_1.txt /bin/ls | /usr/bin/wc > out/outfileshell.txt > /dev/null 2>&1
+	< in/in_1.txt /bin/ls | /usr/bin/wc > out/outfile_shell.txt > /dev/null 2>&1
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --log-file=errors/valgrind_log.txt ../$PIPEX in/in_1.txt /bin/ls /usr/bin/wc out/outfile_user.txt > /dev/null 2>&1
 	check_valgrind
 	VALGRIND_CODE=$?
@@ -153,7 +153,7 @@ mandatory() {
 	fi
 	#Test 7
 
-	< in_default.txt whoami | cat > out/outfileshell.txt > /dev/null 2>&1
+	< in_default.txt whoami | cat > out/outfile_shell.txt > /dev/null 2>&1
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --log-file=errors/valgrind_log.txt ../$PIPEX in/in_default.txt whoami cat out/outfile_user.txt > /dev/null 2>&1
 	check_valgrind
 	VALGRIND_CODE=$?
@@ -173,7 +173,7 @@ mandatory() {
 	fi
 	#TEST 8 ->invalid commands
 
-	< in_default.txt no_command | ls > out/outfileshell.txt > /dev/null 2>&1
+	< in_default.txt no_command | ls > out/outfile_shell.txt > /dev/null 2>&1
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --log-file=errors/valgrind_log.txt ../$PIPEX in/in_default.txt no_command ls out/outfile_user.txt > /dev/null 2>&1
 	check_valgrind
 	VALGRIND_CODE=$?
