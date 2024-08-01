@@ -12,16 +12,20 @@ PIPEX=pipex
 PIPEX_BONUS=pipex_bonus
 
 check_valgrind() {
-	if grep -q "ERROR SUMMARY: 0 errors from 0 contexts" errors/valgrind_log.txt; then
-		if grep -q "FILE DESCRIPTORS: 3 open" valgrind_log.txt; then
+	local valgrind_log="errors/valgrind_log.txt"
+
+	if grep -q "ERROR SUMMARY: 0 errors from 0 contexts" "$valgrind_log"; then
+		if grep -q "FILE DESCRIPTORS: 3 open" "$valgrind_log"; then
+			rm -f "$valgrind_log"
 			return 0
 		else
+			rm -f "$valgrind_log"
 			return 2
 		fi
 	else
+		rm -f "$valgrind_log"
 		return 1
 	fi
-	rm errors/valgrind_log.txt
 }
 
 mandatory() {
@@ -31,7 +35,7 @@ mandatory() {
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --log-file=errors/valgrind_log.txt ../$PIPEX in/in-default.txt wc ls > /dev/null 2>&1
 	CODE=$?
 	check_valgrind
-	VALGRIND_CODE=$
+	VALGRIND_CODE=$?
 	if [ $VALGRIND_CODE -eq 0 ]; then
 		if [ $CODE -eq 0 ]; then
 			printf "\t\t${BLUE}TEST 1: ${RED}KO${RST}\n"
@@ -45,8 +49,7 @@ mandatory() {
 		printf "\t\t${BLUE}TEST 1: ${YELLOW}KO->open fds ${RST}\n"
 	fi
 	#test 2-> no input still creates an output file
-	if [ -e out/outfile2_1.txt ]; then
-		rm out/outfile2_1.txt
+	rm -f out/outfile2_1.txt
 	fi
 	../$PIPEX non-existingfile wc ls out/outfile2_1.txt > /dev/null 2>&1
 	if [ -e out/outfile2_1.txt ]; then
