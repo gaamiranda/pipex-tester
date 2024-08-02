@@ -2,8 +2,9 @@
 
 Tester for pipex(42 School)
 
-> *This tester will check for leaks and open file descriptors
-> *It will not check norminette
+> This tester will check for leaks and open file descriptors
+
+> It will not check norminette
 
 **How to run the tester?
 ```
