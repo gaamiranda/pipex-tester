@@ -492,18 +492,34 @@ printf "\t\t\t${GREEN}If it helps you give a star :)${RST}\n"
 
 if [ -z "$1" ]; then
 	make -C .. re > /dev/null
+	if [ ! -e ../pipex ]; then
+		printf "${BOLD}Executable must be named pipex for both mandatory and bonus tests!${RST}\n"
+		exit 1
+	fi
 	mandatory
 	bonus
 	here_doc
 elif [ "$1" == "m" ]; then
 	make -C .. re > /dev/null
+	if [ ! -e ../pipex ]; then
+		printf "${BOLD}Executable must be named pipex for both mandatory and bonus tests!${RST}\n"
+		exit 1
+	fi
 	mandatory
 elif [ "$1" == "b" ]; then
 	make -C .. re > /dev/null
+	if [ ! -e ../pipex ]; then
+		printf "${BOLD}Executable must be named pipex for both mandatory and bonus tests!${RST}\n"
+		exit 1
+	fi
 	mandatory
 	bonus
 elif [ "$1" == "h" ]; then
 	make -C .. re > /dev/null
+	if [ ! -e ../pipex ]; then
+		printf "${BOLD}Executable must be named pipex for both mandatory and bonus tests!${RST}\n"
+		exit 1
+	fi
 	here_doc
 else
 	echo "Invalid option"
