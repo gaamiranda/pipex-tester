@@ -29,4 +29,4 @@ As you can see above, if you get any errors you can find them in errors director
 
 **Contribute**
 
-This tester is far from perfect so if you find any errors feel free to open an Issue
+This tester is far from perfect so if you find any errors feel free to open an Issue!
