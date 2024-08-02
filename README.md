@@ -26,3 +26,7 @@ Different modes
 ![image](https://github.com/user-attachments/assets/35b266f0-8891-43f8-8b39-3065485da7f1)
 
 As you can see above, if you get any errors you can find them in errors directory
+
+**Contribute**
+
+This tester is far from perfect so if you find any errors feel free to open an Issue
