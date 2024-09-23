@@ -55,14 +55,17 @@ mandatory() {
 		printf "\t\t${BLUE}TEST 1: ${YELLOW}KO->open fds ${RST}\n"
 		printf "Mandatory TEST 1 leaks above\n" >> errors/errors_log.txt
 	fi
-	#test 2-> no input still creates an output file
+	#test 2-> no input file
 
+	< in/in_default.txt ls | ls > out/outfile_shell.txt
 	rm -f out/outfile2_1.txt
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ../$PIPEX non-existingfile wc ls out/outfile2_1.txt > errors/valgrind_log.txt 2>&1
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ../$PIPEX non-existingfile ls ls out/outfile2_1.txt > errors/valgrind_log.txt 2>&1
 	check_valgrind
 	VALGRIND_CODE=$?
+	diff --brief out/outfile_shell.txt out/outfile2_1.txt > /dev/null 2>&1
+	CODE=$?
 	if [ $VALGRIND_CODE -eq 0 ]; then
-		if [ -e out/outfile2_1.txt ]; then
+		if [ $CODE -eq 0 ]; then
 			printf "\t\t${BLUE}TEST 2: ${GREEN}OK${RST}\n"
 		else
 			printf "\t\t${BLUE}TEST 2: ${RED}KO${RST}\n"
@@ -122,15 +125,16 @@ mandatory() {
 	fi
 	#test 5 -> no env variables
 
+	rm -f out/outfile_user.txt
 	< in/in_default.txt ls | wc > out/outfile_shell.txt
-	env -i ../$PIPEX in/in_default.txt ls wc out/outfile_user.txt > /dev/null 2>&1
+	env -i ../$PIPEX in/in_default.txt /bin/ls wc out/outfile_user.txt > /dev/null 2>&1
 	diff --brief out/outfile_shell.txt out/outfile_user.txt > /dev/null 2>&1
 	CODE=$?
 	if [ $CODE -eq 0 ]; then
-		printf "\t\t${BLUE}TEST 5: ${RED}KO${RST}\n"
-		printf "mandatory TEST 5: failed test without env variables this could also be if you are returning exit code 0 when there are no env variables" >> errors/errors_log.txt
-	else
 		printf "\t\t${BLUE}TEST 5: ${GREEN}OK${RST}\n"
+	else
+		printf "\t\t${BLUE}TEST 5: ${RED}KO${RST}\n"
+		printf "mandatory TEST 5: failed test without env variables" >> errors/errors_log.txt
 	fi
 	#test 6
 
@@ -219,6 +223,20 @@ mandatory() {
 	elif [ $VALGRIND_CODE -eq 2 ]; then
 		printf "\t\t${BLUE}TEST 9: ${YELLOW}KO->open fds ${RST}\n"
 		printf "Mandatory TEST 9 leaks above\n" >> errors/errors_log.txt
+	fi
+
+	#test 10 -> no env variables
+
+	echo "aaa" >> out/outfile_user.txt
+	< in/in_default.txt lss | wcc > out/outfile_shell.txt > /dev/null 2>&1
+	env -i ../$PIPEX in/in_default.txt lss wcc out/outfile_user.txt > /dev/null 2>&1
+	diff --brief out/outfile_shell.txt out/outfile_user.txt > /dev/null 2>&1
+	CODE=$?
+	if [ $CODE -eq 0 ]; then
+		printf "\t\t${BLUE}TEST 10: ${GREEN}OK${RST}\n"
+	else
+		printf "\t\t${BLUE}TEST 10: ${RED}KO${RST}\n"
+		printf "mandatory TEST 10: failed test without env variables" >> errors/errors_log.txt
 	fi
 }
 
