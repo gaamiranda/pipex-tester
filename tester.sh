@@ -136,7 +136,6 @@ mandatory() {
 		printf "\t\t${BLUE}TEST 5: ${RED}KO${RST}\n"
 		printf "mandatory TEST 5: failed test without env variables" >> errors/errors_log.txt
 	fi
-	exit
 	#test 6
 
 	< in/in_1.txt /bin/ls | /usr/bin/wc > out/outfile_shell.txt
