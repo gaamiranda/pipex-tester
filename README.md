@@ -8,7 +8,7 @@ Tester for pipex(42 School)
 
 **How to run the tester?**
 ```
-git clone https://github.com/gaamiranda/pipex-tester.git -> in the same directory as your Makefile
+git clone https://github.com/gaamiranda/pipex-tester.git
 cd pipex-tester
 ./tester.sh
 ```
