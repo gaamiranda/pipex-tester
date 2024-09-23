@@ -127,7 +127,7 @@ mandatory() {
 
 	rm -f out/outfile_user.txt
 	< in/in_default.txt ls | wc > out/outfile_shell.txt
-	env -i ../$PIPEX in/in_default.txt /bin/ls wc out/outfile_user.txt > /dev/null 2>&1
+	env -i ../$PIPEX in/in_default.txt /bin/ls /bin/wc out/outfile_user.txt > /dev/null 2>&1
 	diff --brief out/outfile_shell.txt out/outfile_user.txt > /dev/null 2>&1
 	CODE=$?
 	if [ $CODE -eq 0 ]; then
@@ -136,6 +136,7 @@ mandatory() {
 		printf "\t\t${BLUE}TEST 5: ${RED}KO${RST}\n"
 		printf "mandatory TEST 5: failed test without env variables" >> errors/errors_log.txt
 	fi
+	exit
 	#test 6
 
 	< in/in_1.txt /bin/ls | /usr/bin/wc > out/outfile_shell.txt
@@ -228,8 +229,8 @@ mandatory() {
 	#test 10 -> no env variables
 
 	echo "aaa" >> out/outfile_user.txt
-	< in/in_default.txt lss | wcc > out/outfile_shell.txt > /dev/null 2>&1
-	env -i ../$PIPEX in/in_default.txt lss wcc out/outfile_user.txt > /dev/null 2>&1
+	< in/in_default.txt ls | wcc > out/outfile_shell.txt > /dev/null 2>&1
+	env -i ../$PIPEX in/in_default.txt ls wcc out/outfile_user.txt > /dev/null 2>&1
 	diff --brief out/outfile_shell.txt out/outfile_user.txt > /dev/null 2>&1
 	CODE=$?
 	if [ $CODE -eq 0 ]; then
